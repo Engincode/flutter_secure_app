@@ -1,5 +1,8 @@
 # Flutter Secure App
 
+[![Pub Package](https://img.shields.io/pub/v/flutter_secure_app.svg)](https://pub.dev/packages/flutter_secure_app)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 A comprehensive RASP (Runtime Application Self-Protection) and Anti-Tampering Flutter plugin natively bridging security rules for Android & iOS to the Dart layer. Ensure reverse-engineers, malware, and interceptors have a difficult time compromising your app's environment.
 
 ## Features
@@ -10,6 +13,8 @@ A comprehensive RASP (Runtime Application Self-Protection) and Anti-Tampering Fl
 - **App Signature Checks & Signature Validations:** Validates Android Signatures and iOS Apple Team IDs to prevent app repackaging and tampering.
 - **Store Verification (Vending):** Checks if the app was downloaded from official stores (App Store / Google Play).
 - **Device Binding & ID Spoofing Protections:** Prevents device identifiers from being spoofed.
+- **SSL Pinning Interceptor:** Validates server certificates via SHA-256 fingerprints to defend against Man-in-the-Middle (MITM) attacks.
+- **Secure HTTP Client (Anti-Proxy):** Bypasses system proxies natively to prevent network traffic sniffers and interception tools.
 
 ## Installation
 
