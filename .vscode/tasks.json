@@ -1,0 +1,43 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Flutter: Clean (Root)",
+            "type": "shell",
+            "command": "flutter clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Clean (Example)",
+            "type": "shell",
+            "command": "flutter clean",
+            "options": {
+                "cwd": "${workspaceFolder}/example"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Build APK (Example)",
+            "type": "shell",
+            "command": "flutter build apk",
+            "options": {
+                "cwd": "${workspaceFolder}/example"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter: Build iOS (Example)",
+            "type": "shell",
+            "command": "flutter build ios --no-codesign",
+            "options": {
+                "cwd": "${workspaceFolder}/example"
+            },
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
