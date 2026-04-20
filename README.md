@@ -10,7 +10,6 @@ A comprehensive RASP (Runtime Application Self-Protection) and Anti-Tampering Fl
 - **App Signature Checks & Signature Validations:** Validates Android Signatures and iOS Apple Team IDs to prevent app repackaging and tampering.
 - **Store Verification (Vending):** Checks if the app was downloaded from official stores (App Store / Google Play).
 - **Device Binding & ID Spoofing Protections:** Prevents device identifiers from being spoofed.
-- **Advanced String Obfuscation:** Protects sensitive identifiers (like Signatures or Team IDs) against static analysis by decoding them via XOR at runtime.
 
 ## Installation
 
@@ -54,9 +53,6 @@ void main() async {
       // e.g., 'A1:B2:C3...'
       MyGlobalSecureConfig.androidSignature,
     ],
-    // Optional: If you pass Base64+XOR strings above, set this key so the plugin decodes them silently in memory:
-    // obfuscationXorKey: 'my_plugin_level_xor_key_here',
-
     onThreatDetected: (SecureAppThreatType threatType) {
       print('A security threat occurred: $threatType');
       // For example, terminate app gracefully or block login.
@@ -83,7 +79,6 @@ void main() async {
 | `checkOfficialStore` | `bool` | `true` | Verifies installation source is App Store/Google Play (Ignored if `isProdEnv` is `false`). |
 | `validIosTeamIds` | `List<String>` | `[]` | List of approved Apple Team IDs. |
 | `validAndroidSignatures` | `List<String>` | `[]` | List of approved Android App Signatures. |
-| `obfuscationXorKey` | `String?` | `null` | Key for internal Base64/XOR decoding. Ignore if sending pre-decoded values. |
 | `onThreatDetected` | `Function` | `null` | Callback triggered when a threat is identified. |
 | `onException` | `Function` | `null` | Callback for internal plugin exceptions/errors. |
 
@@ -116,14 +111,3 @@ dio.interceptors.add(SslPinningInterceptor(
 // 2. Set Secure HTTP Adapter (Anti-Proxy)
 dio.httpClientAdapter = SecureHttpClientAdapter.getAdapter();
 ```
-
-### How String Obfuscation Works
-
-Storing your `Apple TeamID` and `Android Signatures` in plain-text inside Dart makes it extremely easy for reverse-engineers to bypass signature checks by searching for those strings. 
-
-**Option 1 (External Decrypt):** You can use your own custom Integer XOR arrays to decode your signatures precisely at runtime and pass the clean string to `validIosTeamIds` and `validAndroidSignatures`. The plugin handles them directly in memory.
-
-**Option 2 (Built-in Plugin Decrypt):** 
-1. Obfuscate your string with a XOR Key + Base64 format offline.
-2. Put the encoded string into `validAndroidSignatures`  and pass your `obfuscationXorKey`.
-3. The plugin will natively decode the Base64/XOR string into memory securely avoiding plain-text exposure in your APK/IPA.
