@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Release `1.0.5` to publish latest Flutter/Dart upgrade and SPKI pinning documentation updates.
+
 ## 1.0.4
 
 * Bumped version for new package release.

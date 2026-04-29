@@ -23,7 +23,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_secure_app: ^1.0.0
+  flutter_secure_app: ^1.0.5
 ```
 
 ## Getting Started & Usage
