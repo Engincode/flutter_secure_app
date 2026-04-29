@@ -1,13 +1,13 @@
 name: flutter_secure_app
 description: "A robust security wrapper for Flutter applications implementing Runtime Application Self-Protection (RASP), SSL Pinning, and Anti-Proxy mechanisms."
-version: 1.0.3
+version: 1.0.4
 homepage: https://github.com/Engincode/flutter_secure_app
 repository: https://github.com/Engincode/flutter_secure_app
 issue_tracker: https://github.com/Engincode/flutter_secure_app/issues
 
 environment:
-  sdk: ^3.5.0
-  flutter: '>=3.3.0'
+  sdk: '>=3.11.0 <4.0.0'
+  flutter: '>=3.11.0'
 
 dependencies:
   asn1lib: ^1.1.0

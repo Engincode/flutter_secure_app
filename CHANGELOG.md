@@ -1,3 +1,8 @@
+## 1.0.4
+
+* Bumped version for new package release.
+* Confirmed Flutter/Dart support upgrade and highlighted `SSL SPKI Pinning Interceptor` feature.
+
 ## 1.0.3
 
 * Updated README to highlight `SSL SPKI Pinning Interceptor` as a separate feature.
