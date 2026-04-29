@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -17,7 +18,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _threatStatus = 'Checking...';
-  List<String> _detectedThreats = [];
+  final List<String> _detectedThreats = [];
 
   @override
   void initState() {
@@ -33,14 +34,22 @@ class _MyAppState extends State<MyApp> {
         setState(() {
           _detectedThreats.add(threatType.toString());
         });
-        print('THREAT DETECTED: $threatType');
+        if (kDebugMode) {
+          print('THREAT DETECTED: $threatType');
+        }
         // Handle threat here (e.g. exit app, show warning)
       },
     );
 
-    // 2. Setup Dio with Anti-Proxy and SSL Pinning
+    // 2. Setup Dio with Anti-Proxy, SSL Pinning and SPKI pinning
     final dio = Dio(BaseOptions(baseUrl: 'https://reqres.in'));
-    dio.httpClientAdapter = SecureHttpClientAdapter.getAdapter();
+    dio.httpClientAdapter = SecureHttpClientAdapter.getAdapter(
+      allowedSpkiHashes: [
+        // Example SPKI hash (SHA-256)
+        '5A:C3:A8:D5:11:47:A5:72:0B:44:83:8B:D8:1A:30:A5:68:55:A6:DB:99:7E:59:75:A8:F5:F2:B5:12:F1:C9:92',
+      ],
+      bypassSpkiForLocalhost: true,
+    );
     dio.interceptors.add(
       SslPinningInterceptor(
         allowedFingerprints: [

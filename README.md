@@ -94,6 +94,10 @@ The plugin provides ready-to-use tools for the popular `dio` package to secure y
 **1. SSL Pinning Interceptor**  
 Validates the server certificate SHA-256 fingerprints. If the hash doesn't match, the request is rejected and `SecureAppThreatType.sslPinningError` is triggered.
 
+**1.a. SPKI Pinning in Secure HTTP Client Adapter**  
+SSL SPKI Pinning Control (SSL Subject Public Key Info Control)
+Optionally validates the server certificate's SubjectPublicKeyInfo (SPKI) SHA-256 hash as an additional pinning layer.
+
 **2. Secure HTTP Client Adapter (Anti-Proxy)**  
 Forces the HTTP client to bypass system proxy configurations, making it extremely difficult to intercept traffic using tools like Charles Proxy or Burp Suite.
 
@@ -113,6 +117,11 @@ dio.interceptors.add(SslPinningInterceptor(
   bypassForLocalhost: kDebugMode, // Bypass pinning for local API testing
 ));
 
-// 2. Set Secure HTTP Adapter (Anti-Proxy)
-dio.httpClientAdapter = SecureHttpClientAdapter.getAdapter();
+// 2. Set Secure HTTP Adapter (Anti-Proxy) with optional SPKI pinning
+dio.httpClientAdapter = SecureHttpClientAdapter.getAdapter(
+  allowedSpkiHashes: [
+    'YOUR_SERVER_SPKI_SHA256_HASH',
+  ],
+  bypassSpkiForLocalhost: kDebugMode,
+);
 ```
