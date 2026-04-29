@@ -1,6 +1,11 @@
+## 1.0.3
+
+* Updated README to highlight `SSL SPKI Pinning Interceptor` as a separate feature.
+* Clarified SPKI pinning support and example usage for `SecureHttpClientAdapter`.
+
 ## 1.0.2
 
-* SSL SPKI Pinning Control Added (SSL Subject Public Key Info Control)
+* SSL SPKI Pinning Interceptor Added (SSL Subject Public Key Info Control)
 * Added optional SPKI pinning support to `SecureHttpClientAdapter` for public key validation.
 * Kept existing SHA-256 certificate fingerprint pinning flow in `SslPinningInterceptor`.
 * Added `asn1lib` and `crypto` dependencies to support SPKI extraction and hashing.

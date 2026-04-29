@@ -14,6 +14,7 @@ A comprehensive RASP (Runtime Application Self-Protection) and Anti-Tampering Fl
 - **Store Verification (Vending):** Checks if the app was downloaded from official stores (App Store / Google Play).
 - **Device Binding & ID Spoofing Protections:** Prevents device identifiers from being spoofed.
 - **SSL Pinning Interceptor:** Validates server certificates via SHA-256 fingerprints to defend against Man-in-the-Middle (MITM) attacks.
+- **SSL SPKI Pinning Interceptor:** Optionally validates the server certificate's SubjectPublicKeyInfo (SPKI) SHA-256 hash for an extra layer of public key pinning.
 - **Secure HTTP Client (Anti-Proxy):** Bypasses system proxies natively to prevent network traffic sniffers and interception tools.
 
 ## Installation
