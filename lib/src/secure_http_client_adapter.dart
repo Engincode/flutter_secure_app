@@ -25,11 +25,12 @@ class SecureHttpClientAdapter {
     if (allowedSpkiHashes != null && allowedSpkiHashes.isNotEmpty) {
       adapter.validateCertificate =
           (X509Certificate? cert, String host, int port) {
-        if (cert == null) return false;
-
+        
         if (bypassSpkiForLocalhost && _isLocalhost(host)) {
           return true;
         }
+
+        if (cert == null) return false;
 
         final isSecure = _verifySpkiPinning(cert, allowedSpkiHashes);
 

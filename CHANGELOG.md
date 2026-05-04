@@ -1,3 +1,7 @@
+## 1.0.6
+
+* Fixed a bug in `SecureHttpClientAdapter` where `bypassSpkiForLocalhost` did not work when the certificate was `null`. The localhost check is now evaluated before the null certificate check, ensuring local development bypass works correctly regardless of certificate availability.
+
 ## 1.0.5
 
 * Release `1.0.5` to publish latest Flutter/Dart upgrade and SPKI pinning documentation updates.
