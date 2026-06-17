@@ -57,14 +57,14 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
   CryptoSwift: e64e11850ede528a02a0f3e768cec8e9d92ecb90
-  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
+  device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_secure_app: ae5d8217800c0d03998e79c222a3a8104a041c0b
-  flutter_secure_storage_darwin: 557817588b80e60213cbecb573c45c76b788018d
-  http_certificate_pinning: e0fea5deb9c56c234be0e09fe6991355a39c92e1
-  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
-  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
-  shared_preferences_foundation: 5086985c1d43c5ba4d5e69a4e8083a389e2909e6
+  flutter_secure_app: 7ef61074f19b5c78e084e772aa3c2fcacae95846
+  flutter_secure_storage_darwin: acdb3f316ed05a3e68f856e0353b133eec373a23
+  http_certificate_pinning: 133f28ad5c2d1ecda2581dd2d2cd9dc74da59012
+  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  shared_preferences_foundation: 7036424c3d8ec98dfe75ff1667cb0cd531ec82bb
 
 PODFILE CHECKSUM: 3c63482e143d1b91d2d2560aee9fb04ecc74ac7e
 
