@@ -277,10 +277,19 @@ class FlutterSecureApp {
   }
 
   /// Device ID Spoofing / Mock Identity Detection (Equivalent to FreeRASP onDeviceID)
-  /// Verifies whether the hardware-backed identity of the device (Android ID, iOS IDFV)
+  /// Verifies whether the hardware-backed identity of the device (Android ID)
   /// has changed since the initial installation.
   /// Prevents Device ID manipulation at the OS level.
+  ///
+  /// iOS is exempt: IDFV (identifierForVendor) resets on uninstall while the
+  /// Keychain retains the old value, causing false positives. iOS integrity is
+  /// already enforced by _checkDeviceBinding via the Keychain/SharedPrefs cross-check.
   Future<bool> _checkDeviceIdSpoofing() async {
+    // iOS IDFV can change after uninstall+reinstall, but Keychain survives the
+    // deletion and keeps the old value → guaranteed mismatch = false positive.
+    // _checkDeviceBinding already covers iOS device binding via Keychain.
+    if (Platform.isIOS) return true;
+
     try {
       const storedIdKey = 'app_hardware_device_id';
       const secureStorage = FlutterSecureStorage();
@@ -291,9 +300,6 @@ class FlutterSecureApp {
       if (Platform.isAndroid) {
         final androidInfo = await deviceInfo.androidInfo;
         currentDeviceId = androidInfo.id;
-      } else if (Platform.isIOS) {
-        final iosInfo = await deviceInfo.iosInfo;
-        currentDeviceId = iosInfo.identifierForVendor ?? '';
       }
 
       // Bypass check if the device ID is unreadable

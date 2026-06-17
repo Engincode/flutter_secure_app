@@ -23,7 +23,7 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_secure_app: ^1.0.6
+  flutter_secure_app: ^1.0.7
 ```
 
 ## Getting Started & Usage
@@ -83,8 +83,11 @@ void main() async {
 | `checkDebugger` | `bool` | `true` | Validates if a debugger is attached. |
 | `checkAppSignature` | `bool` | `true` | Checks if the app is repackaged or signed by unauthorized certificates. |
 | `checkOfficialStore` | `bool` | `true` | Verifies installation source is App Store/Google Play (Ignored if `isProdEnv` is `false`). |
+| `checkDeviceBinding` | `bool` | `true` | Detects app cloning or data migration by cross-checking Keychain vs SharedPreferences tokens. |
+| `checkDeviceIdSpoofing` | `bool` | `true` | Detects hardware device ID manipulation (Android only — iOS is covered by `checkDeviceBinding`). |
 | `validIosTeamIds` | `List<String>` | `[]` | List of approved Apple Team IDs. |
 | `validAndroidSignatures` | `List<String>` | `[]` | List of approved Android App Signatures. |
+| `validAndroidStores` | `List<String>` | see below | List of approved Android installer package names. Defaults to Play Store, Amazon, Samsung, Huawei, Xiaomi, OPPO, VIVO. |
 | `onThreatDetected` | `Function` | `null` | Callback triggered when a threat is identified. |
 | `onException` | `Function` | `null` | Callback for internal plugin exceptions/errors. |
 
