@@ -8,14 +8,16 @@ A comprehensive RASP (Runtime Application Self-Protection) and Anti-Tampering Fl
 ## Features
 
 - **Jailbreak / Root Detection:** Detects compromised devices iOS Jailbreak and Android Rooting.
-- **Simulator / Emulator Detection:** Prevents your app from running on fraudulent emulator environments.
-- **Debugger Access Detection:** Halts app execution if a debugger is attached.
+- **Simulator / Emulator Detection:** Detects when your app is running on an emulator or simulator.
+- **Debugger Access Detection:** Detects when a debugger is attached.
 - **App Signature Checks & Signature Validations:** Validates Android Signatures and iOS Apple Team IDs to prevent app repackaging and tampering.
 - **Store Verification (Vending):** Checks if the app was downloaded from official stores (App Store / Google Play).
 - **Device Binding & ID Spoofing Protections:** Prevents device identifiers from being spoofed.
 - **SSL Pinning Interceptor:** Validates server certificates via SHA-256 fingerprints to defend against Man-in-the-Middle (MITM) attacks.
-- **SSL SPKI Pinning Interceptor:** Optionally validates the server certificate's SubjectPublicKeyInfo (SPKI) SHA-256 hash for an extra layer of public key pinning.
-- **Secure HTTP Client (Anti-Proxy):** Bypasses system proxies natively to prevent network traffic sniffers and interception tools.
+- **SPKI Pinning:** Optionally validates the server certificate's SubjectPublicKeyInfo (SPKI) SHA-256 hash for an extra layer of public key pinning.
+- **Secure HTTP Client (Anti-Proxy):** Ignores system proxy settings to prevent network traffic sniffers and interception tools.
+
+The plugin does not stop your app by itself. Every detected threat is reported through `onThreatDetected`, and you decide how to respond.
 
 ## Installation
 
@@ -23,14 +25,22 @@ Add this to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_secure_app: ^1.0.7
+  flutter_secure_app: ^1.0.9
 ```
+
+**Requirements**
+
+- Flutter 3.44+ / Dart 3.12+
+- Android: minSdk 24
+- iOS 13.0+ (Swift Package Manager and CocoaPods are both supported)
 
 ## Getting Started & Usage
 
 Just import and initialize the plugin at the root of your application (preferably before starting the app logic):
 
 ```dart
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_app/flutter_secure_app.dart';
 
 void main() async {
@@ -96,14 +106,25 @@ void main() async {
 The plugin provides ready-to-use tools for the popular `dio` package to secure your network layer against Man-in-the-Middle (MITM) attacks and malicious proxy sniffing.
 
 **1. SSL Pinning Interceptor**  
-Validates the server certificate SHA-256 fingerprints. If the hash doesn't match, the request is rejected and `SecureAppThreatType.sslPinningError` is triggered.
+Validates the SHA-256 fingerprint of the server's leaf certificate. If the fingerprint doesn't match, or the certificate chain is not trusted by the system, the request is rejected and `SecureAppThreatType.sslPinningError` is triggered.
 
-**1.a. SPKI Pinning in Secure HTTP Client Adapter**  
-SSL SPKI Pinning Control (SSL Subject Public Key Info Control)
-Optionally validates the server certificate's SubjectPublicKeyInfo (SPKI) SHA-256 hash as an additional pinning layer.
+**2. Secure HTTP Client Adapter (Anti-Proxy + optional SPKI pinning)**  
+Forces the HTTP client to ignore system proxy configurations, making it extremely difficult to intercept traffic using tools like Charles Proxy or Burp Suite.
+If `allowedSpkiHashes` is provided, it also validates the SHA-256 hash of the server certificate's SubjectPublicKeyInfo (SPKI) as an additional pinning layer.
 
-**2. Secure HTTP Client Adapter (Anti-Proxy)**  
-Forces the HTTP client to bypass system proxy configurations, making it extremely difficult to intercept traffic using tools like Charles Proxy or Burp Suite.
+Fingerprints and SPKI hashes are hex strings. Case is ignored, and `:` or space separators are allowed. You can get them with `openssl`:
+
+```bash
+# Certificate SHA-256 fingerprint (for SslPinningInterceptor)
+echo | openssl s_client -connect api.example.com:443 -servername api.example.com 2>/dev/null \
+  | openssl x509 -noout -fingerprint -sha256
+
+# SPKI SHA-256 hash (for SecureHttpClientAdapter)
+echo | openssl s_client -connect api.example.com:443 -servername api.example.com 2>/dev/null \
+  | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 | awk '{print $2}'
+```
+
+> A certificate fingerprint changes every time the certificate is renewed. Add the new fingerprint to your app before the server certificate is rotated. SPKI hashes stay the same as long as the key pair is reused.
 
 ```dart
 import 'package:dio/dio.dart';

@@ -1,3 +1,7 @@
+## 1.0.9
+
+* Documentation: corrected the README feature descriptions, added the requirements, and explained how to get certificate fingerprints and SPKI hashes with `openssl`.
+
 ## 1.0.8
 
 * **Breaking:** Minimum supported SDK is now Flutter 3.44 / Dart 3.12.
