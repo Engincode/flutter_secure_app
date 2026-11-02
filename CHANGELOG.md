@@ -1,3 +1,13 @@
+## 1.0.8
+
+* **Breaking:** Minimum supported SDK is now Flutter 3.44 / Dart 3.12.
+* Migrated the Android plugin to built-in Kotlin.
+* Added Swift Package Manager support for iOS. CocoaPods is still supported.
+* Removed the `http_certificate_pinning` dependency.
+* `SslPinningInterceptor` fingerprints can now include `:` separators.
+* `SslPinningInterceptor` now reports an untrusted certificate chain as an SSL pinning error.
+* Added support for `flutter_secure_storage` 11.x.
+
 ## 1.0.7
 
 * Fixed a false positive in `raspThreatDeviceId` on iOS release IPA builds. `identifierForVendor` (IDFV) can change after an app uninstall+reinstall while the Keychain retains the old value, causing a permanent mismatch. `_checkDeviceIdSpoofing` now skips iOS entirely; iOS device binding is already enforced by `_checkDeviceBinding` via the Keychain/SharedPreferences cross-check.

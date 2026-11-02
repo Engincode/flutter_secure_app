@@ -6,7 +6,7 @@ import org.mockito.Mockito
 import kotlin.test.Test
 
 /*
- * This demonstrates a simple unit test of the Kotlin portion of this plugin's implementation.
+ * Unit tests for the Kotlin portion of this plugin's implementation.
  *
  * Once you have built the plugin's example app, you can run these tests from the command
  * line by running `./gradlew testDebugUnitTest` in the `example/android/` directory, or
@@ -15,13 +15,14 @@ import kotlin.test.Test
 
 internal class FlutterSecureAppPluginTest {
     @Test
-    fun onMethodCall_getPlatformVersion_returnsExpectedValue() {
+    fun onMethodCall_unknownMethod_returnsNotImplemented() {
         val plugin = FlutterSecureAppPlugin()
 
-        val call = MethodCall("getPlatformVersion", null)
+        val call = MethodCall("unknownMethod", null)
         val mockResult: MethodChannel.Result = Mockito.mock(MethodChannel.Result::class.java)
         plugin.onMethodCall(call, mockResult)
 
-        Mockito.verify(mockResult).success("Android " + android.os.Build.VERSION.RELEASE)
+        Mockito.verify(mockResult).notImplemented()
+        Mockito.verifyNoMoreInteractions(mockResult)
     }
 }

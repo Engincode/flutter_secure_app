@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 
+import 'certificate_fingerprint.dart';
 import 'flutter_secure_app.dart';
 
 /// SSL Pinning Interceptor
@@ -31,19 +31,19 @@ class SslPinningInterceptor extends Interceptor {
     }
 
     try {
-      final secure = await HttpCertificatePinning.check(
-        serverURL: options.baseUrl,
-        headerHttp: Map<String, String>.from(options.headers),
-        sha: SHA.SHA256,
-        allowedSHAFingerprints: allowedFingerprints,
-        timeout: 10,
+      final secure = await isCertificateAllowed(
+        options.baseUrl.isNotEmpty ? Uri.parse(options.baseUrl) : options.uri,
+        allowedFingerprints,
       );
 
-      if (secure.contains('CONNECTION_SECURE')) {
+      if (secure) {
         return handler.next(options);
       } else {
         return _handleSslPinningError(options, handler);
       }
+    } on HandshakeException catch (_) {
+      // The certificate chain is not trusted by the system.
+      return _handleSslPinningError(options, handler);
     } on TimeoutException catch (_) {
       return handler.reject(
         DioException(
@@ -61,16 +61,9 @@ class SslPinningInterceptor extends Interceptor {
         ),
       );
     } catch (e) {
-      if (e.toString().contains('CONNECTION_NOT_SECURE')) {
-        return _handleSslPinningError(options, handler);
-      } else {
-        return handler.reject(
-          DioException(
-            requestOptions: options,
-            error: 'Unknown Error: $e'
-          ),
-        );
-      }
+      return handler.reject(
+        DioException(requestOptions: options, error: 'Unknown Error: $e'),
+      );
     }
   }
 

@@ -2,14 +2,14 @@ group = "com.engincode.flutter_secure_app"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    val kotlinVersion = "2.2.20"
+    val kotlinVersion = "2.4.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.11.1")
+        classpath("com.android.tools.build:gradle:9.1.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
@@ -23,7 +23,6 @@ allprojects {
 
 plugins {
     id("com.android.library")
-    id("kotlin-android")
 }
 
 android {
@@ -34,10 +33,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     sourceSets {
@@ -70,7 +65,13 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.mockito:mockito-core:5.0.0")
 }
